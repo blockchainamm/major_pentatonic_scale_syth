@@ -74,10 +74,13 @@ def load_notes(notestep, notestep1, notescale):
     rev_interval = [0, 2, 3, 1, 1, 2, 3]
     tones_fwd, tones_rev = [], []
     
-    print(f'The frequencies in Hz of notes in the {notescale} minor blues scale in ascending order')
+    print(f'The frequencies in Hz of notes with {notescale} as root note minor blues scale in ascending order')
     for note in notes_interval: 
         # print the frequency ascending notes of the scale        
-        print(rev_freq[notestep])
+        if len(note_name[notestep]) == 2:
+            print(f'{note_name[notestep]}   : {rev_freq[notestep]}')
+        elif len(note_name[notestep]) == 3:
+            print(f'{note_name[notestep]}  : {rev_freq[notestep]}') 
         
         # Call function to generate the equivalent tone for the given frequency
         tone = np.array(generate_sample(rev_freq[notestep], 1, 1.0), dtype=np.int16)    
@@ -87,7 +90,7 @@ def load_notes(notestep, notestep1, notescale):
         tones_fwd.append(tone)
     
     print()
-    print(f'The frequencies in Hz of notes in the {notescale} minor blues scale in descending order')
+    print(f'The frequencies in Hz of notes with {notescale} as root note minor blues scale in descending order')
 
     for note in rev_interval: 
         notestep1 = notestep1 - note
@@ -98,7 +101,10 @@ def load_notes(notestep, notestep1, notescale):
         tones_rev.append(tone1)
 
         # print the frequency descending notes of the scale        
-        print(rev_freq[notestep1])
+        if len(note_name[notestep1]) == 2:
+            print(f'{note_name[notestep1]}   : {rev_freq[notestep1]}')
+        elif len(note_name[notestep1]) == 3:
+            print(f'{note_name[notestep1]}  : {rev_freq[notestep1]}')
 
     # Return list of frequencies in the ascending and descending notes of the minor blues scale    
     return tones_fwd, tones_rev
@@ -164,7 +170,11 @@ for notescale in scale_list:
 
     notelist = df_filtered['FrequencyHz'].values.tolist()
 
+    notename = df_filtered['Note'].values.tolist()
+
     rev_freq = notelist[::-1] 
+
+    note_name = notename[::-1]
 
     tones_fwd, tones_rev = load_notes(notestep, notestep1, notescale)
 
